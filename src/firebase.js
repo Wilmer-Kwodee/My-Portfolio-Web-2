@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, getDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -20,9 +20,16 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+export {db};
 // const analytics = getAnalytics(app);
 
-addDoc(collection(db, 'users'), {
-    name: "wilmer",
-    country: "canada"
-})
+// addDoc(collection(db, 'users'), {
+//     name: "wilmer",
+//     country: "canada"
+// })
+
+
+const docRef = doc(db, "users", "nRv9oA9ERkJ3pML1B8zQ");
+// const docSnap = await getDoc(docRef);
+// console.log(docSnap.data())
+
