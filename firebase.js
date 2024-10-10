@@ -1,5 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDoc, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore/lite';
+import { getStorage } from 'firebase/storage';
+
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBpTL2ecFwJV_UCQ5Yf7v2sl-onXJGX27s",
@@ -13,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage()
 
 // Get a list of cities from your database
 async function getCities(db) {
@@ -41,4 +44,4 @@ async function insertToFirestore(title, desc, color, order){
   }
   
 
-export {db, doc, getCities, getDoc, insertToFirestore, updateDoc}
+export {db, storage, doc, getCities, getDoc, insertToFirestore, updateDoc}

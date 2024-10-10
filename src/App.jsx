@@ -49,9 +49,11 @@ function App() {
             <div key={item.id}>
               <div style={{display: 'flex', backgroundColor: item.color, padding: 30, height: 200}}>
                 <div id='left' style={{width: '50%', paddingLeft: 100}}>
-                  <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} />
+                  {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
+                  <img style={{width: 500, height: 200, outlineStyle: 'solid', borderRadius: 20}} src={item.image} alt='empty...' />
                 </div>
                 <div id='right' style={{width: '50%'}}>
+                  <span>{item.order}</span>
                   <h1>{item.title} : </h1>
                   <span>{item.desc}</span>
                   <br />
