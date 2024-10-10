@@ -1,80 +1,77 @@
 import { useEffect, useState } from 'react';
-
-//-------------------------------------------------------------------
-
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-// TODO: Replace the following with your app's Firebase project configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBpTL2ecFwJV_UCQ5Yf7v2sl-onXJGX27s",
-  authDomain: "wilmer-portfolio-web.firebaseapp.com",
-  projectId: "wilmer-portfolio-web",
-  storageBucket: "wilmer-portfolio-web.appspot.com",
-  messagingSenderId: "997051434145",
-  appId: "1:997051434145:web:894f21f13fa81542b95ce0",
-  measurementId: "G-G4NHBQEGN9"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Get a list of cities from your database
-async function getCities(db) {
-  const citiesCol = collection(db, 'MyProjects');
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map(doc => doc.data());
-  return cityList;
-}
-
-//-------------------------------------------------------------------
+import {db, getCities, updateDoc} from '../firebase';
+import {doc, deleteDoc} from 'firebase/firestore/lite';
+import Card from './components/Card';
 
 function App() {
   const [notes, setNote] = useState([])
+
   useEffect(() => {
     getCities(db).then(setNote);  // Resolve promise and set the result to state
   }, []);
 
-  const [title, setTitle] = useState('')
-  const [desc, setDesc] = useState('')
+  async function handleUpdate(item){
+    window.location.href = '/update/' + item.id
+  }
 
-  function handleSubmit(e){
-    e.preventDefault()
-    const newNote = {title: title, desc: desc}
-    setNote([...notes, newNote])
+  async function handleDelete(id){
+    await deleteDoc(doc(db, 'MyProjects', id))
+    alert('success')
+    window.location.href = '/'
+  }
+  
+  async function handleOrderUp(item){
+    const docRef = doc(db, 'MyProjects', item.id)
+    await updateDoc(docRef, { order: item.order - 1 })
+    window.location.href = '/'
+  }
+  async function handleOrderDown(item){
+    const docRef = doc(db, 'MyProjects', item.id)
+    await updateDoc(docRef, { order: item.order + 1 })
+    window.location.href = '/'
   }
 
   return (
-    <>
-    <h1 style={{display: 'flex', justifyContent: 'center'}}>Wilmer's Observation of Life</h1>
-    <form className="input-box" onSubmit={handleSubmit} style={{display: 'flex', justifyContent: 'center'}}>
-      <div>
-        <span>Title: </span>
-        <input placeholder='insert title here....' value={title} onChange={e => setTitle(e.target.value)}/>
+    <div style={{fontFamily: 'arial'}}>
+      <div id='section-01' style={{padding: 60, paddingLeft: 80}}>
+        <h1 style={{fontSize: 60}}>Wilmer's <br/>Journey of Life</h1>
+        <a href='/insert'>insert new</a>
       </div>
-      <div>
-        <span>Description: </span>
-        <input placeholder='insert description here....' value={desc} onChange={e => setDesc(e.target.value)}/>
-      </div>
-      <button>INSERT</button>
-    </form>
 
-    <hr />
-    
-    <div className="container-boxes" style={{padding: 30}}>
-      {notes.map( (item) => {
-        return(
-          <div key={item.title}>
-            <h1>{item.title} : </h1>
-            <span>{item.desc}</span>
-            <br />
-            <br />
-            <br />
-          </div>
-        );
-      }
-      )}
+      <hr />
+      
+      <div id="container-boxes">
+        {notes
+        .sort( (a,b) => a.order - b.order)
+        .map( (item) => {
+          return(
+
+            <div key={item.id}>
+              <div style={{display: 'flex', backgroundColor: item.color, padding: 30, height: 200}}>
+                <div id='left' style={{width: '50%', paddingLeft: 100}}>
+                  <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} />
+                </div>
+                <div id='right' style={{width: '50%'}}>
+                  <h1>{item.title} : </h1>
+                  <span>{item.desc}</span>
+                  <br />
+                  <br />
+                  <br />
+                  <button onClick={() => handleUpdate(item)}>update</button>
+                  <button onClick={() => handleDelete(item.id)}>delete</button>
+                  <a> _ </a>
+                  <button onClick={() => {handleOrderUp(item)}}>^</button>
+                  <button onClick={() => {handleOrderDown(item)}}>v</button>
+                </div>
+              </div>
+              <hr/>
+            </div>
+            // <Card item={item}/>
+          );
+        }
+        )}
+      </div>
     </div>
-  </>
   );
 }
 
