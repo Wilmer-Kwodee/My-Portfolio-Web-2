@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { db, doc, getDoc, storage, updateDoc } from "../firebase"
 import { useParams } from "react-router-dom"
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
@@ -11,6 +11,9 @@ export default function(){
     const [itemColor, setItemColor] = useState()
     const [itemImage, setItemImage] = useState()
     const [itemImagePath, setItemImagePath] = useState()
+
+    const inputTitleRef = useRef(null)
+    const h1TitleRef = useRef(null)
 
     useEffect(() => {
         async function biarBisaPakeAwait() {
@@ -34,13 +37,20 @@ export default function(){
             const imageUrl = await uploadFile();
             const docRef = doc(db, 'MyProjects', id);
     
-            // Once the URL is available, update the Firestore document
-            await updateDoc(docRef, {
-                title: itemTitle,
-                desc: itemDesc,
-                color: itemColor,
-                image: imageUrl // Use the URL obtained from uploadFile
-            });
+            if(itemImage == null){
+                await updateDoc(docRef, {
+                    title: itemTitle, desc: itemDesc, color: itemColor,
+                });
+            }
+            else{
+                // Once the URL is available, update the Firestore document
+                await updateDoc(docRef, {
+                    title: itemTitle,
+                    desc: itemDesc,
+                    color: itemColor,
+                    image: imageUrl, // Use the URL obtained from uploadFile
+                });
+            }
     
             alert('Success');
             window.location.href = '/';
@@ -50,6 +60,10 @@ export default function(){
     }
     
     function uploadFile() {
+        if(itemImage == null){
+            return;
+        }
+
         return new Promise((resolve, reject) => {
             const imageRef = storageRef(storage, `Project Images/${id}/img`);
             
@@ -73,37 +87,44 @@ export default function(){
         });
     }
     
+    function handleTitleClick(){
+        inputTitleRef.current.style.display = 'block'
+        inputTitleRef.current.focus()
+        h1TitleRef.current.style.display = 'none'
+    }
 
     return(
         <>
         {item ? 
-            <div>
-            <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 200}}>
-            <div id='left' style={{width: '50%', paddingLeft: 100}}>
-                {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
-                <img style={{width: 500, height: 200, outlineStyle: 'solid', borderRadius: 20}} src={item.image} alt='empty...' />
-            </div>
-            <div id='right' style={{width: '50%'}}>
-                <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)}/>
-                <h1>{itemTitle} : </h1>
-                <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
-                <span>{itemDesc}</span>
-                <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
-                <br/>
-                <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0])}/>
-                <br />
-                <br />
-                <br />
-                <button>update</button>
-                <button>delete</button>
-                <a> _ </a>
-                <button>^</button>
-                <button>v</button>
-                <a> ____________________________________ </a>
-                <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
-            </div>
-            </div>
-            <hr/>
+            <div style={{fontFamily: 'arial'}}>
+                <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 200}}>
+                <div id='left' style={{width: '50%', paddingLeft: 140}}>
+                    {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
+                    <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+                </div>
+                <div id='right' style={{width: '50%', paddingRight: 130}}>
+                    <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
+                    <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
+                    
+                    <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
+                    <span>{itemDesc}</span>
+                    
+                    <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
+                    <br/>
+                    <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0])}/>
+                    <br />
+                    <br />
+                    <br />
+                    <button>update</button>
+                    <button>delete</button>
+                    <a> _ </a>
+                    <button>^</button>
+                    <button>v</button>
+                    <a> ________________________________ </a>
+                    <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
+                </div>
+                </div>
+                <hr/>
             </div>
             :
             <h1>loading...</h1>

@@ -29,13 +29,14 @@ async function getCities(db) {
   return cityList;
 }
 
-async function insertToFirestore(title, desc, color, order){
+async function insertToFirestore(title, desc, color, order, imageLink){
     try {
       const docRef = await addDoc(collection(db, 'MyProjects'), {
         title: title,
         desc: desc,
         color: color,
-        order: order
+        order: order,
+        image: imageLink
       })
       console.log(docRef)
     } catch (e) {

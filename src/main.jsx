@@ -4,6 +4,7 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import InsertPage from './InsertPage.jsx'
 import UpdatePage from './UpdatePage.jsx'
+import InsertPageNew from './InsertPageNew.jsx'
 
 const router = createBrowserRouter(
   [
@@ -13,7 +14,7 @@ const router = createBrowserRouter(
     },
     {
       path: '/insert',
-      element: <InsertPage/>
+      element: <InsertPageNew/>
     },
     {
       path: '/update/:id',
