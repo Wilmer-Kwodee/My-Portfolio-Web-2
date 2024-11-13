@@ -3,7 +3,7 @@ import { db, doc, getDoc, insertToFirestore, storage, updateDoc } from "../fireb
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { addDoc, collection } from "firebase/firestore/lite";
 
-export default function(){
+export default function InsertForm() {
     const [itemTitle, setItemTitle] = useState('Enter Title Here...')
     const [itemDesc, setItemDesc] = useState('Enter desc here...')
     const [itemColor, setItemColor] = useState('whitesmoke')
@@ -20,22 +20,17 @@ export default function(){
         }
     
         try {
-            // Insert first to get the ID
             const docRef = await addDoc(collection(db, 'MyProjects'), {
                 title: itemTitle,
                 desc: itemDesc,
                 color: itemColor,
-                image: '', // Empty string for now
+                image: '',
                 order: 0
             });
     
-            // Now we have the docRef with the ID
             const id = docRef.id;
-    
-            // Upload the file using the new ID
             const imageUrl = await uploadFile(id);
     
-            // Update the document with the image URL
             await updateDoc(docRef, {
                 image: imageUrl
             });
@@ -68,77 +63,87 @@ export default function(){
         });
     }
     
-    function handleTitleClick(){
-        inputTitleRef.current.style.display = 'block'
-        inputTitleRef.current.focus()
-        h1TitleRef.current.style.display = 'none'
+    function handleTitleClick() {
+        inputTitleRef.current.classList.remove('hidden');
+        inputTitleRef.current.focus();
+        h1TitleRef.current.classList.add('hidden');
     }
 
-    return(
-        <div style={{fontFamily: 'arial'}}>
-            <h1 style={{fontSize: 50}}>Write new chapter</h1>
+    return (
+        <div className="font-sans">
+            <h1 className="text-5xl mb-8">Write new chapter</h1>
             
-            <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 200}}>
-            <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
-                <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src='' alt='empty...' />
+            <div className="flex p-8 h-52" style={{ backgroundColor: itemColor }}>
+                <div className="w-1/2 pl-36">
+                    <img 
+                        src="" 
+                        alt="empty..." 
+                        className="h-52 rounded-lg outline outline-gray-200"
+                    />
+                </div>
+                <div className="w-1/2 pr-32">
+                    <input 
+                        value={itemTitle}
+                        onChange={(e) => setItemTitle(e.target.value)}
+                        ref={inputTitleRef}
+                        className="hidden text-3xl font-bold mt-2 mb-5 w-full bg-transparent outline-none"
+                        style={{ backgroundColor: itemColor }}
+                    />
+                    <h1 
+                        onClick={handleTitleClick}
+                        ref={h1TitleRef}
+                        className="text-3xl font-bold cursor-pointer"
+                    >
+                        {itemTitle}
+                    </h1>
+                    
+                    <textarea 
+                        value={itemDesc}
+                        onChange={e => setItemDesc(e.target.value)}
+                        className="w-full p-2 border rounded mb-4 resize-none"
+                    />
+                    <span className="block mb-4">{itemDesc}</span>
+                    
+                    <input 
+                        value={itemColor}
+                        onChange={(e) => setItemColor(e.target.value)}
+                        className="w-full p-2 border rounded mb-4"
+                    />
+                    
+                    <input 
+                        type="file"
+                        accept="image/*"
+                        onChange={e => setItemImage(e.target.files[0])}
+                        className="mb-8"
+                    />
+                    
+                    <div className="flex items-center space-x-2">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            update
+                        </button>
+                        <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            delete
+                        </button>
+                        <span className="mx-2">_</span>
+                        <button className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                            ^
+                        </button>
+                        <button className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                            v
+                        </button>
+                    </div>
+                    
+                    <div className="mt-8">
+                        <button 
+                            onClick={handleUpdate}
+                            className="text-3xl px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div id='right' style={{width: '50%', paddingRight: 130}}>
-                <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
-                <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
-                
-                <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
-                <span>{itemDesc}</span>
-                
-                <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
-                <br/>
-                <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0])}/>
-                <br />
-                <br />
-                <br />
-                <button>update</button>
-                <button>delete</button>
-                <a> _ </a>
-                <button>^</button>
-                <button>v</button>
-                <a> ________________________________ </a>
-                <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
-            </div>
-            </div>
-            <hr/>
+            <hr className="my-4" />
         </div>
     )
 }
-
-// real wilmer code:
-/*
-
-async function handleUpdate(){
-        uploadFile();
-        const docRef = doc(db, 'MyProjects', id)
-        await updateDoc(docRef, {
-            title: itemTitle,
-            desc: itemDesc,
-            color: itemColor,
-            image: itemImagePath
-        })
-
-        alert('sukses')
-        window.location.href = '/'
-    }
-
-    function uploadFile(){
-        const imageRef = storageRef(storage, Project Images/${id}/img)
-        uploadBytes(imageRef, itemImage)
-            .then( (snapshot) => { 
-                getDownloadURL(snapshot.ref)
-                .then((url) => { 
-                    saveData(url)
-                    setItemImagePath(url)
-                    console.log(url)
-                }).catch(e => console.log(e.message))
-                }       
-            )
-    }
-
-*/

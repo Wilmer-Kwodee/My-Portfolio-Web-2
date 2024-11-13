@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import InsertPage from './InsertPage.jsx'
 import UpdatePage from './UpdatePage.jsx'
 import InsertPageNew from './InsertPageNew.jsx'
+import './index.css'
 
 const router = createBrowserRouter(
   [
