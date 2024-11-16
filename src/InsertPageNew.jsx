@@ -78,10 +78,9 @@ export default function(){
         <div style={{fontFamily: 'arial'}}>
             <h1 style={{fontSize: 50}}>Write new chapter</h1>
             
-            <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 200}}>
+            <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
             <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
-                <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src='' alt='empty...' />
+                <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : ''} alt='empty...' />
             </div>
             <div id='right' style={{width: '50%', paddingRight: 130}}>
                 <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
@@ -92,7 +91,7 @@ export default function(){
                 
                 <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
                 <br/>
-                <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0])}/>
+                <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0]) } />
                 <br />
                 <br />
                 <br />

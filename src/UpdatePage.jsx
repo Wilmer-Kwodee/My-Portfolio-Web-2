@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react"
 import { db, doc, getDoc, storage, updateDoc } from "../firebase"
 import { useParams } from "react-router-dom"
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { RotatingLines } from "react-loader-spinner";
 
 export default function(){
     const { id } = useParams()
-    const [item, setItem] = useState()
+    const [item, setItem] = useState({})
     const [itemTitle, setItemTitle] = useState()
     const [itemDesc, setItemDesc] = useState()
     const [itemColor, setItemColor] = useState()
@@ -15,13 +16,14 @@ export default function(){
     const inputTitleRef = useRef(null)
     const h1TitleRef = useRef(null)
 
+    const [isLoading, setLoading] = useState(true)
+
     useEffect(() => {
         async function biarBisaPakeAwait() {
             const docRef = doc(db, 'MyProjects', id)
+            setLoading(true)
             const docSnap = await getDoc(docRef)
             const docData = docSnap.data()
-            console.log(docData)
-
             setItem(docData)
             setItemTitle(docData.title)
             setItemDesc(docData.desc)
@@ -29,6 +31,7 @@ export default function(){
         }
 
         biarBisaPakeAwait()
+        setLoading(false)
     }, [])
 
     async function handleUpdate() {
@@ -95,19 +98,18 @@ export default function(){
 
     return(
         <>
-        {item ? 
+        {!isLoading ? 
             <div style={{fontFamily: 'arial'}}>
-                <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 200}}>
+                <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
                 <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                    {/* <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} /> */}
-                    <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+                    <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
                 </div>
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
                     <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
                     <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
                     
                     <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
-                    <span>{itemDesc}</span>
+                    <p>{itemDesc}</p>
                     
                     <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
                     <br/>
@@ -127,7 +129,15 @@ export default function(){
                 <hr/>
             </div>
             :
-            <h1>loading...</h1>
+            <div>
+                <RotatingLines 
+                    strokeColor="grey"
+                    strokeWidth="5"
+                    animationDuration="0.75"
+                    width="96"
+                    visible={true}
+                />
+            </div>
         }
         </>
     )

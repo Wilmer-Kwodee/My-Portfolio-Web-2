@@ -19,7 +19,7 @@ const router = createBrowserRouter(
     {
       path: '/update/:id',
       element: <UpdatePage/>
-    },
+    }
   ]
 )
 
