@@ -142,36 +142,3 @@ export default function(){
         </>
     )
 }
-
-// real wilmer code:
-/*
-
-async function handleUpdate(){
-        uploadFile();
-        const docRef = doc(db, 'MyProjects', id)
-        await updateDoc(docRef, {
-            title: itemTitle,
-            desc: itemDesc,
-            color: itemColor,
-            image: itemImagePath
-        })
-
-        alert('sukses')
-        window.location.href = '/'
-    }
-
-    function uploadFile(){
-        const imageRef = storageRef(storage, Project Images/${id}/img)
-        uploadBytes(imageRef, itemImage)
-            .then( (snapshot) => { 
-                getDownloadURL(snapshot.ref)
-                .then((url) => { 
-                    saveData(url)
-                    setItemImagePath(url)
-                    console.log(url)
-                }).catch(e => console.log(e.message))
-                }       
-            )
-    }
-
-*/

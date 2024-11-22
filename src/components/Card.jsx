@@ -1,25 +1,38 @@
 export default function Card({item}){
     return(
-        <div key={item.id}>
-
-              <div style={{display: 'flex', backgroundColor: item.color, padding: 30, height: 200}}>
-                <div id='left' style={{width: '50%', paddingLeft: 100}}>
-                  <div id='img-frame' style={{backgroundColor: 'lightgray', width: 500, height: 200, borderRadius: 20}} />
-                </div>
-                <div id='right' style={{width: '50%'}}>
-                  <h1>{item.title} : </h1>
-                  <span>{item.desc}</span>
-                  <br />
-                  <br />
-                  <br />
-                  <button onClick={() => handleDelete(item.id)}>delete</button>
-                  <a> _ </a>
-                  <button onClick={() => {}}>^</button>
-                  <button onClick={() => {}}>v</button>
-                </div>
-              </div>
-              <hr/>
+      <>
+        {item.order % 2 == 0 ? 
+          <div style={{display: 'flex',  backgroundColor: item.color, padding: 30, height: 'auto'}}>
+            <div id='left' style={{width: '50%', paddingLeft: 140}}>
+              <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+            </div>
+            <div id='right' style={{width: '50%', paddingRight: 140}}>
+              <h1>{item.title}</h1>
+              <span style={{ color: 'gray'}}>{item.desc}</span>
+              <br />
+              <br />
+              <br />
               
-        </div>
+            </div>
+          </div>
+        :
+        <div style={{display: 'flex', backgroundColor: item.color, padding: 30, height: 'auto'}}>
+            <div id='left' style={{width: '50%', paddingLeft: 140}}>
+              <h1>{item.title}</h1>
+              <span style={{ color: 'gray'}}>{item.desc}</span>
+            </div>
+            <div id='right' style={{width: '50%', paddingLeft: 10}} >
+              <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+              <br />
+              <br />
+              <br />
+              
+            </div>
+          </div>
+      }
+      </>
+
+      
+
     )
 }
