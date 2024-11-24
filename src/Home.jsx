@@ -42,6 +42,17 @@ export default function Home() {
         }
         )}
     </div>
+    <div style={{    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100px',
+    textAlign: 'center',
+    padding: '20px',
+}}>
+    <a href='/temp' style={{    textDecoration: 'none',    color: 'gray',
+
+}}>Made with ♡ by Wilmer Kwodeevan</a>
+</div>
     </>
   )
 }

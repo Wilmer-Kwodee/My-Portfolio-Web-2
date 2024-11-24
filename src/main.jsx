@@ -5,6 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import InsertPageNew from './InsertPageNew.jsx'
 import UpdatePage from './UpdatePage.jsx'
 import Home from './Home.jsx'
+import Detail from './Detail.jsx'
+import Temp from './Temp.jsx'
 
 const router = createBrowserRouter(
   [
@@ -26,8 +28,16 @@ const router = createBrowserRouter(
       element: <InsertPageNew/>
     },
     {
+      path: '/detail/:id',
+      element: <Detail/>
+    },
+    {
       path: '/update/:id',
       element: <UpdatePage/>
+    },
+    {
+      path: '/temp',
+      element: <Temp/>
     }
   ]
 )

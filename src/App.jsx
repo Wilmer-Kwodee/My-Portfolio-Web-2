@@ -17,9 +17,11 @@ function App() {
   }
 
   async function handleDelete(id){
-    await deleteDoc(doc(db, 'MyProjects', id))
-    alert('success')
-    window.location.href = '/'
+    if(confirm('you sure?')){      
+      await deleteDoc(doc(db, 'MyProjects', id))
+      alert('success')
+      window.location.href = '/'
+    }
   }
 
   async function handleOrderChangeDB(){
@@ -88,7 +90,7 @@ function App() {
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
                   <span>{item.order}</span>
                   <h1>{item.title}</h1>
-                  <span>{item.desc}</span>
+                  <span style={{ whiteSpace: 'pre-wrap' }}>{item.desc.slice(0, 200)}...</span>
                   <br />
                   <br />
                   <br />

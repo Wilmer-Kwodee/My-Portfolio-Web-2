@@ -6,7 +6,7 @@ import { addDoc, collection } from "firebase/firestore/lite";
 export default function(){
     const [itemTitle, setItemTitle] = useState('Enter Title Here...')
     const [itemDesc, setItemDesc] = useState('Enter desc here...')
-    const [itemColor, setItemColor] = useState('whitesmoke')
+    const [itemColor, setItemColor] = useState('white')
     const [itemImage, setItemImage] = useState()
     const [itemImagePath, setItemImagePath] = useState()
 
@@ -76,7 +76,7 @@ export default function(){
 
     return(
         <div style={{fontFamily: 'arial'}}>
-            <h1 style={{fontSize: 50}}>Write new chapter</h1>
+            <h1 style={{fontSize: 50, padding: '3rem'}}>Write new chapter</h1>
             
             <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
             <div id='left' style={{width: '50%', paddingLeft: 140}}>
@@ -95,16 +95,9 @@ export default function(){
                 <br />
                 <br />
                 <br />
-                <button>update</button>
-                <button>delete</button>
-                <a> _ </a>
-                <button>^</button>
-                <button>v</button>
-                <a> ________________________________ </a>
                 <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
             </div>
             </div>
-            <hr/>
         </div>
     )
 }

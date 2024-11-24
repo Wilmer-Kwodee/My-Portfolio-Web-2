@@ -56,7 +56,7 @@ export default function(){
             }
     
             alert('Success');
-            window.location.href = '/';
+            window.location.href = '/control-room';
         } catch (error) {
             console.error('Error updating document:', error.message);
         }
@@ -99,17 +99,17 @@ export default function(){
     return(
         <>
         {!isLoading ? 
-            <div style={{fontFamily: 'arial'}}>
+            <div style={{fontFamily: 'arial', paddingTop: '7rem'}}>
                 <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
                 <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                    <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
+                    <img style={{position: 'fixed', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
                 </div>
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
                     <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
                     <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
                     
                     <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
-                    <p>{itemDesc}</p>
+                    <p style={{ whiteSpace: 'pre-wrap' }}>{itemDesc}</p>
                     
                     <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
                     <br/>
@@ -117,16 +117,9 @@ export default function(){
                     <br />
                     <br />
                     <br />
-                    <button>update</button>
-                    <button>delete</button>
-                    <a> _ </a>
-                    <button>^</button>
-                    <button>v</button>
-                    <a> ________________________________ </a>
                     <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
                 </div>
                 </div>
-                <hr/>
             </div>
             :
             <div>
