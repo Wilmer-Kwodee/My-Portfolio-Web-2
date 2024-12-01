@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { db, doc, getDoc, insertToFirestore, storage, updateDoc } from "../firebase"
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { addDoc, collection } from "firebase/firestore/lite";
+import { RotatingLines } from "react-loader-spinner";
 
 export default function(){
     const [itemTitle, setItemTitle] = useState('Enter Title Here...')
@@ -13,6 +14,8 @@ export default function(){
     const inputTitleRef = useRef(null)
     const h1TitleRef = useRef(null)
 
+    const [isLoading, setLoading] = useState(false)
+
     async function handleUpdate() {
         if (itemImage == null) {
             alert('oi image empty');
@@ -20,6 +23,7 @@ export default function(){
         }
     
         try {
+            setLoading(true)
             // Insert first to get the ID
             const docRef = await addDoc(collection(db, 'MyProjects'), {
                 title: itemTitle,
@@ -40,6 +44,7 @@ export default function(){
                 image: imageUrl
             });
     
+            setLoading(false)
             alert('Success');
             window.location.href = '/';
         } catch (error) {
@@ -76,26 +81,67 @@ export default function(){
 
     return(
         <div style={{fontFamily: 'arial'}}>
-            <h1 style={{fontSize: 50, padding: '3rem'}}>Write new chapter</h1>
+
+            {isLoading ? 
+            <>
+                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                    <RotatingLines 
+                        strokeColor="grey"
+                        strokeWidth="5"
+                        animationDuration="0.75"
+                        width="96"
+                        visible={true}
+                    />
+                </div>
+            </> 
+            : <></> }
+
+            <h1 className='text-3xl font-bold' style={{fontSize: 50, padding: '3rem'}}>Write new chapter</h1>
             
             <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
             <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : ''} alt='empty...' />
+                <img className="max-w-96" style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : ''} alt='empty...' />
             </div>
             <div id='right' style={{width: '50%', paddingRight: 130}}>
                 <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
-                <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
+                <h1 className='text-3xl font-bold' onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
                 
-                <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
+                <textarea 
+                value={itemDesc} 
+                onChange={e => setItemDesc(e.target.value)} 
+                className="w-full border border-black rounded-md p-2"
+                />                
                 <span>{itemDesc}</span>
                 
-                <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
+    {/*
+   * sorry... sumpah terpaksa chatgpt, ga ada waktu sumpah 
+   */}
+
+    
+
+  {/*
+   */}
+
+                <input 
+                style={{ marginTop: 20 }} 
+                value={itemColor} 
+                onChange={(e) => setItemColor(e.target.value)} 
+                className="border border-black rounded-md p-2"
+                />                
                 <br/>
                 <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0]) } />
                 <br />
                 <br />
                 <br />
-                <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
+                <button onClick={() => {handleUpdate()}} style={{
+                    marginTop: '1rem',
+                    padding: '10px 20px',
+                    fontSize: '45px',
+                    backgroundColor: '#00d5ff',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '5px',
+                }}>Submit</button>
             </div>
             </div>
         </div>

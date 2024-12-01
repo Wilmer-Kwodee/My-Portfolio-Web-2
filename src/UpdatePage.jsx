@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react"
-import { db, doc, getDoc, storage, updateDoc } from "../firebase"
+import { addTechnology, db, doc, getDoc, removeTechnology, storage, updateDoc } from "../firebase"
 import { useParams } from "react-router-dom"
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { RotatingLines } from "react-loader-spinner";
+import MultiImageUploader from "./MultiImageUploader";
 
 export default function(){
     const { id } = useParams()
@@ -12,6 +13,7 @@ export default function(){
     const [itemColor, setItemColor] = useState()
     const [itemImage, setItemImage] = useState()
     const [itemImagePath, setItemImagePath] = useState()
+    const [newTech, setNewTech] = useState("");
 
     const inputTitleRef = useRef(null)
     const h1TitleRef = useRef(null)
@@ -20,23 +22,30 @@ export default function(){
 
     useEffect(() => {
         async function biarBisaPakeAwait() {
-            const docRef = doc(db, 'MyProjects', id)
             setLoading(true)
-            const docSnap = await getDoc(docRef)
-            const docData = docSnap.data()
-            setItem(docData)
-            setItemTitle(docData.title)
-            setItemDesc(docData.desc)
-            setItemColor(docData.color)
+            try {
+                const docRef = doc(db, 'MyProjects', id)
+                const docSnap = await getDoc(docRef)
+                const docData = docSnap.data()
+    
+                setItem(docData);
+                setItemTitle(docData.title);
+                setItemDesc(docData.desc);
+                setItemColor(docData.color);
+
+                setLoading(false)
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
         }
 
         biarBisaPakeAwait()
-        setLoading(false)
     }, [])
 
     async function handleUpdate() {
         try {
             // Wait for the file to upload and get the URL
+            setLoading(true)
             const imageUrl = await uploadFile();
             const docRef = doc(db, 'MyProjects', id);
     
@@ -55,6 +64,7 @@ export default function(){
                 });
             }
     
+            setLoading(false)
             alert('Success');
             window.location.href = '/control-room';
         } catch (error) {
@@ -96,6 +106,24 @@ export default function(){
         h1TitleRef.current.style.display = 'none'
     }
 
+      /*
+   * sorry... sumpah terpaksa chatgpt, ga ada waktu sumpah 
+   */
+
+      function handleAddTechnology() {
+        if (newTech.trim() !== "") {
+            addTechnology(id, newTech);
+            setNewTech(""); // Clear the input field
+        }
+    }
+    
+    function handleRemoveTechnology(tech) {
+        removeTechnology(id, tech);
+    }
+
+      /*
+      */
+
     return(
         <>
         {!isLoading ? 
@@ -106,23 +134,59 @@ export default function(){
                 </div>
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
                     <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
-                    <h1 onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
+                    <h1 className='text-3xl font-bold' onClick={handleTitleClick} ref={h1TitleRef}>{itemTitle}</h1>
                     
-                    <textarea value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
+                    <textarea                 className="w-full h-52 border border-black rounded-md p-2"
+ value={itemDesc} onChange={e => setItemDesc(e.target.value)} style={{width: '100%'}}/><br/>
                     <p style={{ whiteSpace: 'pre-wrap' }}>{itemDesc}</p>
                     
-                    <input style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
+                    <input className="border border-black rounded-md p-2"
+ style={{marginTop: 20}} value={itemColor} onChange={(e) => setItemColor(e.target.value)}/><br/>
                     <br/>
                     <input type="file" accept="image/*" onChange={e => setItemImage(e.target.files[0])}/>
                     <br />
                     <br />
                     <br />
-                    <button onClick={() => {handleUpdate()}} style={{fontSize: 35}}>Submit</button>
+                    
+                    <div>
+                        {/* Existing UI */}
+                        <h3 className="font-bold">Technologies</h3>
+                        <ul>
+                            {item.technologies?.map((tech, index) => (
+                                <li key={index}>
+                                    {tech} -
+                                    <button className="text-red-500" onClick={() => handleRemoveTechnology(tech)}> - Remove</button>
+                                </li>
+                            ))}
+                        </ul>
+                        <input
+                            type="text"
+                            value={newTech}
+                            onChange={(e) => setNewTech(e.target.value)}
+                            placeholder="Add a technology"
+                            className="border border-black rounded-md p-2"
+                        />
+                        <button onClick={handleAddTechnology} className="text-green-500">Add Technology</button>
+                    </div>
+
+                    <br />
+                    <br />
+                    <br />
+                    <MultiImageUploader id={id}/>
+                    <button onClick={() => {handleUpdate()}}                 style={{
+                    marginTop: '1rem',
+                    padding: '10px 20px',
+                    fontSize: '45px',
+                    backgroundColor: '#00d5ff',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '5px',
+                }}>Submit</button>
                 </div>
                 </div>
             </div>
             :
-            <div>
+            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
                 <RotatingLines 
                     strokeColor="grey"
                     strokeWidth="5"

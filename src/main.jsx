@@ -7,6 +7,7 @@ import UpdatePage from './UpdatePage.jsx'
 import Home from './Home.jsx'
 import Detail from './Detail.jsx'
 import Temp from './Temp.jsx'
+import './index.css'
 
 const router = createBrowserRouter(
   [

@@ -61,7 +61,7 @@ function App() {
 
       <div id='section-01' style={{padding: 60, paddingLeft: 80}}>
         {/* <img src='wp4054327.jpg' /> */}
-        <h1 style={{fontSize: 60}}>The <br/>Control Room</h1>
+        <h1 className='font-bold' style={{fontSize: 60}}>The <br/>Control Room</h1>
         <a href='/insert' style={{backgroundColor: 'lightblue', padding: 20, borderRadius: 100, textDecoration: 'none', fontSize: 30}}>+</a>
       </div>
 
@@ -85,12 +85,23 @@ function App() {
               <div style={{display: 'flex', backgroundColor: item.color, padding: 30, height: 'auto'}}>
                 <div id='left' style={{width: '50%', paddingLeft: 140}}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="none" viewBox="0 0 25 25"><path fill="#121923" d="M9.5 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm0 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm1.5 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM15.5 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm1.5 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM15.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>
-                  <img style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+                  <img className="w-96" style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
                 </div>
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
-                  <span>{item.order}</span>
-                  <h1>{item.title}</h1>
+                  <h1 className='text-3xl font-bold'>{item.title}</h1>
                   <span style={{ whiteSpace: 'pre-wrap' }}>{item.desc.slice(0, 200)}...</span>
+                  <div className="flex gap-5 pt-5">
+                    {item.technologies ? 
+                      item.technologies.map((tech) => (
+                        <>
+                        <img src={`/SVGs/${tech}.svg`} className="w-10"/>
+                        </>
+                      ))
+                      :
+                      <></>
+                    }
+                  </div>
+                    <span>{item.order}</span>
                   <br />
                   <br />
                   <br />
