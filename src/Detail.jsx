@@ -50,10 +50,10 @@ export default function Detail() {
             <div style={{fontFamily: 'arial'}}>
                 <div style={{display: 'flex', padding: 30, height: 'auto'}}>
                 <div id='left' style={{ width: '50%', paddingLeft: 140}}>
-                    <img style={{position: 'static', marginTop: '13rem', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
+                    <img style={{position: 'static', marginTop: '13rem', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'whitesmoke', outlineWidth: 20}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
                     <div>
                         {itemImages?.map((url, index) => (
-                            <img key={index} src={url} alt={`Image ${index}`} style={{position: 'static', marginTop: '1rem', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} />
+                            <img key={index} src={url} alt={`Image ${index}`} style={{position: 'static', marginTop: '3rem', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'whitesmoke', outlineWidth: 20}} />
                         ))}
                     </div>
                 </div>

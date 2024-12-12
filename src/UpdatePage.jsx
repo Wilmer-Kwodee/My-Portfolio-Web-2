@@ -130,7 +130,7 @@ export default function(){
             <div style={{fontFamily: 'arial', paddingTop: '7rem'}}>
                 <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
                 <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                    <img style={{position: 'fixed', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
+                    <img style={{position: 'fixed', height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'whitesmoke', outlineWidth: 20}} src={itemImage ? URL.createObjectURL(itemImage) : item.image} alt='empty...' />
                 </div>
                 <div id='right' style={{width: '50%', paddingRight: 130}}>
                     <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>

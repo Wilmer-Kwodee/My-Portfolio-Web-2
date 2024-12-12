@@ -2,7 +2,7 @@ export default function Card({item}){
     return(
       <a href={'/detail/' + item.id} className='card transition hover:bg-gray-300 m-24 p-10 rounded-3xl' style={{display: 'flex', height: 'auto'}}>
         <div id='left' style={{width: '50%', paddingLeft: 140}}>
-          <img className='animate-bounce w-96' style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={item.image} alt='empty...' />
+          <img className='animate-bounce w-96' style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'whitesmoke', outlineWidth: 20}} src={item.image} alt='empty...' />
         </div>
         <div id='right' style={{width: '50%', paddingRight: 140}}>
           <h1 className='animate-bounce text-3xl font-bold'>{item.title}</h1>

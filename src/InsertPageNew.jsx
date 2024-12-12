@@ -100,7 +100,7 @@ export default function(){
             
             <div style={{display: 'flex', backgroundColor: itemColor, padding: 30, height: 'auto'}}>
             <div id='left' style={{width: '50%', paddingLeft: 140}}>
-                <img className="max-w-96" style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'lightgray'}} src={itemImage ? URL.createObjectURL(itemImage) : ''} alt='empty...' />
+                <img className="max-w-96" style={{height: 200, outlineStyle: 'solid', borderRadius: 20, outlineColor: 'whitesmoke', outlineWidth: 20}} src={itemImage ? URL.createObjectURL(itemImage) : ''} alt='empty...' />
             </div>
             <div id='right' style={{width: '50%', paddingRight: 130}}>
                 <input value={itemTitle} onChange={(e) => setItemTitle(e.target.value)} ref={inputTitleRef} style={{display: 'none', fontSize: 32, fontWeight: 700, marginTop: 10, marginBottom: 20, backgroundColor: itemColor, outlineStyle: 'none'}}/>
