@@ -9,7 +9,8 @@
       rgba(255, 255, 255, 0) 20px, 
       rgba(255, 255, 255, 0) 40px
     ),
-    linear-gradient(to right, #FF7E00, #FF0066);
+    linear-gradient(to right, #FF7E00, #ff3485);
+    /* linear-gradient(to right, #FF7E00, #FF0066); */
 }
 
 .home-section-2{
@@ -47,5 +48,25 @@ path {
       rgba(255,255,255, 0) 20px,
       rgba(255,255,255, 0) 40px
     ),
-    linear-gradient(to right, #00B7FF, #00FFBB);
+    linear-gradient(to right, #2ec4ff, #1dffc3);
+    /* linear-gradient(to right, #00B7FF, #00FFBB); */
+    /* linear-gradient(to right, #5bd1ff, #6affd7); */
+}
+
+
+@keyframes arrow-opacity{
+  0%{
+    opacity: 100;
+  }
+  20%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+.home-section-1__arrow{
+  animation: arrow-opacity linear;
+  animation-timeline: scroll(y);
+
 }

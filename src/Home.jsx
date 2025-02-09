@@ -25,6 +25,11 @@ export default function Home() {
       </div>
       <div className="home-section-1__description">
       </div>
+      <div className="home-section-1__arrow fixed bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className='font-bold bg-black text-white rounded-full p-5 px-7 opacity-70 animate-bounce'>
+        V
+        </div>
+      </div>
     </div>      
 
     <div className="home-section-2 p-0">
